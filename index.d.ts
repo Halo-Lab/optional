@@ -1,6 +1,6 @@
 export type None = null | undefined;
 export type Some<T> = NonNullable<T>;
-export type Optional<T> = Some<T> | None;
+export type Optional<T> = T | None;
 
 export const None: None;
 
