@@ -30,10 +30,19 @@ export function orElse(optional, fallback) {
     : of(optional ?? fallback());
 }
 
+export function apply(optional, optionalWithCallback) {
+  return arguments.length === 1
+    ? (anotherOptional) => apply(anotherOptional, optional)
+    : map(optional, (value) =>
+        map(optionalWithCallback, (callback) => callback(value))
+      );
+}
+
 export default {
   of,
   or,
   map,
+  apply,
   isNone,
   isSome,
   orElse,

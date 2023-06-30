@@ -46,9 +46,18 @@ export function orElse<A>(
   fallback: () => Optional<A>
 ): Optional<A>;
 
+export function apply<A, B>(
+  optionalCallback: Optional<(value: A) => B>
+): (optional: Optional<A>) => Optional<B>;
+export function apply<A, B>(
+  optional: Optional<A>,
+  optionalCallback: Optional<(value: A) => B>
+): Optional<B>;
+
 type _of = typeof of;
 type _or = typeof or;
 type _map = typeof map;
+type _apply = typeof apply;
 type _isNone = typeof isNone;
 type _isSome = typeof isSome;
 type _orElse = typeof orElse;
@@ -64,6 +73,7 @@ declare namespace Optional {
   export const of: _of;
   export const or: _or;
   export const map: _map;
+  export const apply: _apply;
   export const isNone: _isNone;
   export const isSome: _isSome;
   export const orElse: _orElse;
