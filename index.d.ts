@@ -54,6 +54,28 @@ export function apply<A, B>(
   optionalCallback: Optional<(value: A) => B>
 ): Optional<B>;
 
+export function filter<A>(
+  predicate: BooleanConstructor
+): (optional: Optional<A>) => Optional<Exclude<A, "" | false | 0 | None>>;
+export function filter<A, B extends A>(
+  predicate: (value: Some<A>) => value is Some<B>
+): (optional: Optional<A>) => Optional<B>;
+export function filter<A>(
+  predicate: (value: Some<A>) => boolean
+): (optional: Optional<A>) => Optional<A>;
+export function filter<A>(
+  optional: Optional<A>,
+  predicate: BooleanConstructor
+): Optional<Exclude<A, "" | false | 0 | None>>;
+export function filter<A, B extends A>(
+  optional: Optional<A>,
+  predicate: (value: Some<A>) => value is Some<B>
+): Optional<B>;
+export function filter<A>(
+  optional: Optional<A>,
+  predicate: (value: Some<A>) => boolean
+): Optional<A>;
+
 type _of = typeof of;
 type _or = typeof or;
 type _map = typeof map;
@@ -61,6 +83,7 @@ type _apply = typeof apply;
 type _isNone = typeof isNone;
 type _isSome = typeof isSome;
 type _orElse = typeof orElse;
+type _filter = typeof filter;
 
 type _None = None;
 type _Some<A> = Some<A>;
@@ -77,6 +100,7 @@ declare namespace Optional {
   export const isNone: _isNone;
   export const isSome: _isSome;
   export const orElse: _orElse;
+  export const filter: _filter;
   export const Default: None;
 }
 

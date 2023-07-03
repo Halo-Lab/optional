@@ -38,6 +38,12 @@ export function apply(optional, optionalWithCallback) {
       );
 }
 
+export function filter(optional, predicate) {
+  return predicate
+    ? map(optional, (value) => (predicate(value) ? value : None))
+    : (anotherOptional) => filter(anotherOptional, optional);
+}
+
 export default {
   of,
   or,
@@ -46,5 +52,6 @@ export default {
   isNone,
   isSome,
   orElse,
+  filter,
   Default: None,
 };
