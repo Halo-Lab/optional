@@ -26,8 +26,8 @@ export function or(optional, fallback) {
 
 export function orElse(optional, fallback) {
   return fallback
-    ? (anotherOptional) => orElse(anotherOptional, optional)
-    : of(optional ?? fallback());
+    ? of(optional ?? fallback())
+    : (anotherOptional) => orElse(anotherOptional, optional);
 }
 
 export function apply(optional, optionalWithCallback) {
