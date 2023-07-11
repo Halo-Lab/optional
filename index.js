@@ -14,27 +14,29 @@ export function isSome(value) {
 
 export function map(optional, callback) {
   return callback
-    ? of(isSome(optional) ? callback(optional) : optional)
+    ? isSome(optional)
+      ? callback(optional)
+      : optional
     : (anotherOptional) => map(anotherOptional, optional);
 }
 
 export function or(optional, fallback) {
   return arguments.length === 1
     ? (anotherOptional) => or(anotherOptional, optional)
-    : of(optional ?? fallback);
+    : optional ?? fallback;
 }
 
 export function orElse(optional, fallback) {
   return fallback
-    ? of(optional ?? fallback())
+    ? optional ?? fallback()
     : (anotherOptional) => orElse(anotherOptional, optional);
 }
 
 export function apply(optional, optionalWithCallback) {
   return arguments.length === 1
     ? (anotherOptional) => apply(anotherOptional, optional)
-    : map(optional, (value) =>
-        map(optionalWithCallback, (callback) => callback(value))
+    : map(zip(optional, optionalWithCallback), ([value, callback]) =>
+        callback(value),
       );
 }
 
@@ -44,10 +46,22 @@ export function filter(optional, predicate) {
     : (anotherOptional) => filter(anotherOptional, optional);
 }
 
+export function zip(first, second) {
+  return arguments.length === 1
+    ? (anotherOptional) => zip(anotherOptional, first)
+    : map(first, (first) => map(second, (second) => [first, second]));
+}
+
+export function unzip(optional) {
+  return optional ?? [None, None];
+}
+
 export default {
   of,
   or,
   map,
+  zip,
+  unzip,
   apply,
   isNone,
   isSome,
