@@ -88,6 +88,16 @@ export function unzip<A, B>(
   optional: Optional<readonly [A, B]>,
 ): readonly [Optional<A>, Optional<B>];
 
+type Holder<_A> = {};
+
+export function transpose<A, B extends Holder<Optional<A>>>(
+  lift: (value: Optional<A>) => B,
+): (optional: Optional<Holder<A>>) => B;
+export function transpose<A, B extends Holder<Optional<A>>>(
+  optional: Optional<Holder<A>>,
+  lift: (value: Optional<A>) => B,
+): B;
+
 type _of = typeof of;
 type _or = typeof or;
 type _map = typeof map;
@@ -98,6 +108,7 @@ type _isNone = typeof isNone;
 type _isSome = typeof isSome;
 type _orElse = typeof orElse;
 type _filter = typeof filter;
+type _transpose = typeof transpose;
 
 type _None = None;
 type _Some<A> = Some<A>;
@@ -118,6 +129,7 @@ declare namespace Optional {
   export const orElse: _orElse;
   export const filter: _filter;
   export const Default: None;
+  export const transpose: _transpose;
 }
 
 export default Optional;

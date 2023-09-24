@@ -56,6 +56,12 @@ export function unzip(optional) {
   return optional ?? [None, None];
 }
 
+export function transpose(optional, lift) {
+  return arguments.length === 1
+    ? (anotherOptional) => transpose(anotherOptional, optional)
+    : optional ?? lift(None);
+}
+
 export default {
   of,
   or,
@@ -68,4 +74,5 @@ export default {
   orElse,
   filter,
   Default: None,
+  transpose,
 };
